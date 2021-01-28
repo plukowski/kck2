@@ -43,6 +43,7 @@ function step2() {
         canvas[i].width = planes[i].naturalWidth;
         ctx[i].drawImage(planes[i], 0, 0);
         id[i] = ctx[i].getImageData(0, 0, canvas[i].width, canvas[i].height);
+        idc[i] = ctx[i].createImageData(canvas[i].width, canvas[i].height);
     }
 
     //Obliczanie przebliżonej luminancji tła
@@ -65,6 +66,17 @@ function step2() {
             }
         }
     }
+    //Wypełnianie wynikowego imageData czernią
+    for(let i = 0; i < 6; i++){
+       // console.log(idc[i].data.length);
+        for(let j = 0; j < idc[i].data.length; j+=4){
+            idc[i].data[j] = 0;
+            idc[i].data[j+1] = 0;
+            idc[i].data[j+2] = 0;
+            idc[i].data[j+3] = 255;
+        }
+    }
+    
     //Pobieranie próbek i wykonywanie operacji
     for (let i = 0; i < 6; i++) {
         for (let y = 0; y + SQUARE_SIZE < canvas[i].height; y++) {
@@ -112,15 +124,15 @@ function step2() {
                         //console.log("trafienie");
                         for (let x2 = lu.x1; x2 <= ru.x1; x2 += 4) {
                             //console.log(y2);
-                            id[i].data[y2 + x2] = 255;
-                            id[i].data[y2 + x2 + 1] = 255;
-                            id[i].data[y2 + x2 + 2] = 255;
+                            idc[i].data[y2 + x2] = 255;
+                            idc[i].data[y2 + x2 + 1] = 255;
+                            idc[i].data[y2 + x2 + 2] = 255;
                         }
                     }
                 }
             }
         }
-        ctx[i].putImageData(id[i], 0, 0);
+        ctx[i].putImageData(idc[i], 0, 0);
     }
 
 
