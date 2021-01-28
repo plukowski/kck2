@@ -26,7 +26,7 @@ let idc = []
 for (let i = 0; i < 6; i++) {
     let image = new Image();
     
-    image.src = "img/" + i + ".JPG";
+    image.src = i + ".jpg";
     planes.push(image);
     image.onload = function () {
         loadCounter++;
